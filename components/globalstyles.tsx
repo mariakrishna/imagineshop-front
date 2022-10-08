@@ -1,16 +1,12 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
   html,
   body {
+    background-color: #fff;
     padding: 0;
     margin: 0;
-    background-color: #fff;
-  }
-  
-  :root {
-    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
   a {
     color: inherit;
