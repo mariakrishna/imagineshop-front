@@ -6,6 +6,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 
 import GlobalStyle from "../components/globalstyles";
+import Layout from "../components/Layout";
 
 const theme: DefaultTheme = {
   colors: {
@@ -19,7 +20,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </ThemeProvider>
     </>
   );
