@@ -10,13 +10,25 @@ import { Container } from "../styles/utils";
 import { IProduct } from "../types";
 
 const ShoppingCart: NextPage = () => {
-  const { getProduct } = useContext(ShoppingCartContext);
+  const {
+    getProduct,
+    deleteProduct,
+    getTotalProducts,
+    getTotalValue,
+    getShippingValue,
+  } = useContext(ShoppingCartContext);
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [refresh, setRefresh] = useState<number>(0);
 
   useEffect(() => {
     const values = getProduct();
     setProducts(values);
-  }, []);
+  }, [refresh]);
+
+  const handleDeleteProduct = (id: string) => {
+    deleteProduct(id);
+    setRefresh((oldValue) => refresh + 1);
+  };
 
   return products && products.length > 0 ? (
     <Main>
@@ -29,7 +41,7 @@ const ShoppingCart: NextPage = () => {
             products.map((product, index) => (
               <div key={index}>
                 <ButtonContainer>
-                  <button>
+                  <button onClick={() => handleDeleteProduct(product._id)}>
                     <DeleteIcon icon={faX} />
                   </button>
                 </ButtonContainer>
@@ -49,13 +61,14 @@ const ShoppingCart: NextPage = () => {
           <ShoppingCartPayment>
             <PaymentTitle>Resumo do Pedido</PaymentTitle>
             <PaymentValue>
-              <span>{products.length} Produtos</span> <span>R$ 000</span>
+              <span>{products.length} Produtos</span>{" "}
+              <span>{getTotalProducts()}</span>
             </PaymentValue>
             <PaymentShipping>
-              <span>Frete</span> <span>R$ 000</span>
+              <span>Frete</span> <span>{getShippingValue()}</span>
             </PaymentShipping>
             <PaymentTotal>
-              <span>Total</span> <span>R$ 000</span>
+              <span>Total</span> <span>{getTotalValue()}</span>
             </PaymentTotal>
             <Separator></Separator>
             <LoginTitle>Login</LoginTitle>
