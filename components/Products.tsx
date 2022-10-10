@@ -2,22 +2,13 @@ import styled from "styled-components";
 import Image, { StaticImageData } from "next/image";
 import { Container } from "../styles/utils";
 import Link from "next/link";
-
-interface Product {
-  _id: string;
-  name: string;
-  image: string;
-  price: number;
-  formattedPrice: string;
-  splitedPrice: string;
-}
+import { IProduct } from "../types";
 
 interface ProductsProps {
-  products: any[];
+  products: IProduct[];
 }
 
 const Products = ({ products }: ProductsProps) => {
-  console.log(products);
   return (
     <ProductContainer>
       <Title>

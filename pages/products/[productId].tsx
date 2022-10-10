@@ -1,25 +1,16 @@
 import type { NextPage, GetServerSideProps } from "next";
 import styled from "styled-components";
+import { useContext } from "react";
 import Image from "next/image";
 
+import { IProduct } from "../../types";
 import Banner from "../../components/Banner";
 import { Container } from "../../styles/utils";
 import BannerImage from "../../public/images/BANNER-02.png";
-
-interface Product {
-  _id: string;
-  name: string;
-  image: string;
-  price: number;
-  formattedPrice: string;
-  splitedPrice: string;
-  fileName: string;
-  description: string;
-  summary: string;
-}
+import { ShoppingCartContext } from "../../contexts/ShoppingCartContext";
 
 interface ProductsProps {
-  product: Product;
+  product: IProduct;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -27,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const api = "http://imagineshop.herokuapp.com";
   const results = await fetch(`${api}/products/${productId}`);
-  const product: Product = await results.json();
+  const product: IProduct = await results.json();
   product.image = `${api}/uploads/${product.fileName}`;
   product.formattedPrice = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -45,6 +36,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const ProductId: NextPage<ProductsProps> = ({ product }) => {
+  const { addProduct } = useContext(ShoppingCartContext);
+  const addProductInShoppingCart = (product: IProduct) => {
+    addProduct(product);
+  };
+
   return (
     <>
       <ProductContainer>
@@ -59,7 +55,9 @@ const ProductId: NextPage<ProductsProps> = ({ product }) => {
             <ProductSplitPrice>
               10x de {product.splitedPrice} sem juros
             </ProductSplitPrice>
-            <Button>Adicionar ao carrinho</Button>
+            <Button onClick={() => addProductInShoppingCart(product)}>
+              Adicionar ao carrinho
+            </Button>
             <ProductDescription>{product.description}</ProductDescription>
           </div>
         </ProductDetail>
