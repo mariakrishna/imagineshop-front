@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Image, { StaticImageData } from "next/image";
 import { Container } from "../styles/utils";
+import Link from "next/link";
 
 interface Product {
   _id: string;
@@ -26,19 +27,21 @@ const Products = ({ products }: ProductsProps) => {
         {products &&
           products.map((product) => (
             <ProductItem key={product._id}>
-              <a href="">
-                <Image
-                  src={product.image}
-                  width={230}
-                  height={230}
-                  alt="Product Image"
-                />
-                <ProductName>{product.name}</ProductName>
-                <ProductPrice>{product.formattedPrice}</ProductPrice>
-                <ProductSplitPrice>
-                  10x de {product.splitedPrice}
-                </ProductSplitPrice>
-              </a>
+              <Link href={`/products/${product._id}`}>
+                <a href="">
+                  <Image
+                    src={product.image}
+                    width={230}
+                    height={230}
+                    alt="Product Image"
+                  />
+                  <ProductName>{product.name}</ProductName>
+                  <ProductPrice>{product.formattedPrice}</ProductPrice>
+                  <ProductSplitPrice>
+                    10x de {product.splitedPrice}
+                  </ProductSplitPrice>
+                </a>
+              </Link>
             </ProductItem>
           ))}
       </ProductList>
@@ -68,7 +71,7 @@ const ProductList = styled.div`
 
 const ProductItem = styled.div`
   border: 1px solid #eaeaea;
-  height: 23.125rem;
+  height: 25.125rem;
   border-radius: 4px;
   box-shadow: 5px 0px 10px #d9d9d9;
   padding: 1rem;
