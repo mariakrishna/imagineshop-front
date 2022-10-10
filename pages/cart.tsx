@@ -45,6 +45,31 @@ const ShoppingCart: NextPage = () => {
               </div>
             ))}
         </ShoppingCartProducts>
+        <section>
+          <ShoppingCartPayment>
+            <PaymentTitle>Resumo do Pedido</PaymentTitle>
+            <PaymentValue>
+              <span>{products.length} Produtos</span> <span>R$ 000</span>
+            </PaymentValue>
+            <PaymentShipping>
+              <span>Frete</span> <span>R$ 000</span>
+            </PaymentShipping>
+            <PaymentTotal>
+              <span>Total</span> <span>R$ 000</span>
+            </PaymentTotal>
+            <Separator></Separator>
+            <LoginTitle>Login</LoginTitle>
+            <InputGroup>
+              <span>e-mail:</span>
+              <input type="text" />
+            </InputGroup>
+            <InputGroup>
+              <span>senha:</span>
+              <input type="password" />
+            </InputGroup>
+            <Button>Continuar</Button>
+          </ShoppingCartPayment>
+        </section>
       </ShoppingCartContainer>
     </Main>
   ) : (
@@ -117,4 +142,98 @@ const ProductPrice = styled.p`
   margin-top: 1rem;
   place-self: start end;
 `;
+
+const ShoppingCartPayment = styled.div`
+  background-color: #f0f1ef;
+  border-radius: 4px;
+  padding: 1rem;
+`;
+
+const PaymentTitle = styled.p`
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0;
+`;
+
+const PaymentValue = styled.div`
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: ${({ theme }) => theme.colors.secondary};
+  margin-top: 5rem;
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    display: block;
+  }
+`;
+
+const PaymentShipping = styled.div`
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: ${({ theme }) => theme.colors.secondary};
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    display: block;
+  }
+`;
+
+const PaymentTotal = styled.div`
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 3.125rem 0 5rem 0;
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    display: block;
+  }
+`;
+
+const LoginTitle = styled.p`
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 2rem 0;
+`;
+
+const InputGroup = styled.div`
+  span {
+    text-transform: uppercase;
+    margin-bottom: 0.625rem;
+    display: block;
+  }
+
+  input {
+    width: 100%;
+    height: 1.25rem;
+    border: unset;
+  }
+
+  margin-bottom: 1.3rem;
+`;
+
+const Button = styled.button`
+  display: block;
+  border: unset;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Montserrat";
+  text-transform: uppercase;
+  cursor: pointer;
+  margin: 0 auto;
+  width: 240px;
+  height: 60px;
+`;
+
 export default ShoppingCart;
