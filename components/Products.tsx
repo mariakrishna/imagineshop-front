@@ -1,9 +1,14 @@
 import styled from "styled-components";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { Container } from "../styles/utils";
 
 interface Product {
+  _id: string;
   name: string;
+  image: string;
+  price: number;
+  formattedPrice: string;
+  splitedPrice: string;
 }
 
 interface ProductsProps {
@@ -11,20 +16,31 @@ interface ProductsProps {
 }
 
 const Products = ({ products }: ProductsProps) => {
+  console.log(products);
   return (
     <ProductContainer>
       <Title>
         <span>De</span>staques
       </Title>
       <ProductList>
-        <ProductItem>
-          <a href="">
-            <Image src="" width={230} height={230} alt="Product Image" />
-            <ProductName>Nome</ProductName>
-            <ProductPrice>Preço</ProductPrice>
-            <ProductSplitPrice>Preço parcelado</ProductSplitPrice>
-          </a>
-        </ProductItem>
+        {products &&
+          products.map((product) => (
+            <ProductItem key={product._id}>
+              <a href="">
+                <Image
+                  src={product.image}
+                  width={230}
+                  height={230}
+                  alt="Product Image"
+                />
+                <ProductName>{product.name}</ProductName>
+                <ProductPrice>{product.formattedPrice}</ProductPrice>
+                <ProductSplitPrice>
+                  10x de {product.splitedPrice}
+                </ProductSplitPrice>
+              </a>
+            </ProductItem>
+          ))}
       </ProductList>
     </ProductContainer>
   );
