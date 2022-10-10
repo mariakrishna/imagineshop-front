@@ -4,14 +4,13 @@ import {
   faInstagram,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
-import { NextPage } from "next";
 import Image from "next/image";
 import styled from "styled-components";
 
-import Logo from "../assets/logo.png";
+import Logo from "../public/images/logo.png";
 import { Container } from "../styles/utils";
 
-const Footer: NextPage = () => {
+const Footer = () => {
   return (
     <StyledFooter>
       <FooterContainer>
@@ -40,8 +39,6 @@ const Footer: NextPage = () => {
 };
 
 const StyledFooter = styled.footer`
-  width: 100vw;
-  height: 12.5rem;
   background-color: #f4f4f4;
 `;
 const FooterContainer = styled.div`
@@ -49,6 +46,7 @@ const FooterContainer = styled.div`
   display: grid;
   grid-template-columns: 130px auto 130px;
   padding-top: 2.5rem;
+  height: 12.5rem;
 `;
 
 const Contact = styled.p`
