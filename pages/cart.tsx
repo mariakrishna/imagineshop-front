@@ -3,6 +3,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import { ShoppingCartContext } from "../contexts/ShoppingCartContext";
@@ -16,9 +17,13 @@ const ShoppingCart: NextPage = () => {
     getTotalProducts,
     getTotalValue,
     getShippingValue,
+    clearAll,
   } = useContext(ShoppingCartContext);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [refresh, setRefresh] = useState<number>(0);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     const values = getProduct();
@@ -28,6 +33,64 @@ const ShoppingCart: NextPage = () => {
   const handleDeleteProduct = (id: string) => {
     deleteProduct(id);
     setRefresh((oldValue) => refresh + 1);
+  };
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    const api = "http://imagineshop.herokuapp.com";
+    const token = await getTokenLogin(api, email, password);
+    if (!token) {
+      console.log("login invalido");
+      return;
+    }
+    const productIds: string[] = [];
+    products.map((product) => productIds.push(product._id));
+    const sell = await sellProducts(api, token, productIds);
+    if (!sell) {
+      console.log("compra inválida");
+      return;
+    }
+    console.log("comprado com sucesso");
+    clearAll();
+    router.push("/success");
+  };
+
+  const getTokenLogin = async (
+    api: string,
+    email: string,
+    password: string
+  ): Promise<string | null> => {
+    const result = await fetch(`${api}/login`, {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: { "Content-type": "application/json" },
+    });
+
+    if (result.status !== 200) {
+      return null;
+    }
+    const { token } = await result.json();
+    return token;
+  };
+
+  const sellProducts = async (
+    api: string,
+    token: string,
+    products: string[]
+  ): Promise<string | null> => {
+    const result = await fetch(`${api}/products/sell`, {
+      method: "POST",
+      body: JSON.stringify({ products }),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (result.status !== 200) {
+      return null;
+    }
+    return "success";
   };
 
   return products && products.length > 0 ? (
@@ -74,13 +137,23 @@ const ShoppingCart: NextPage = () => {
             <LoginTitle>Login</LoginTitle>
             <InputGroup>
               <span>e-mail:</span>
-              <input type="text" />
+              <input
+                type="text"
+                value={email || ""}
+                onChange={(e) => setEmail(e.currentTarget.value)}
+              />
             </InputGroup>
             <InputGroup>
               <span>senha:</span>
-              <input type="password" />
+              <input
+                type="password"
+                value={password || ""}
+                onChange={(e) => setPassword(e.currentTarget.value)}
+              />
             </InputGroup>
-            <Button>Continuar</Button>
+            <Button type="submit" onClick={handleSubmit}>
+              Continuar
+            </Button>
           </ShoppingCartPayment>
         </section>
       </ShoppingCartContainer>
@@ -94,7 +167,7 @@ const Main = styled.main`
   ${Container}
 `;
 const Title = styled.p`
-  font-size: 1.875rme;
+  font-size: 1.875rem;
   font-weight: 700;
   margin: 5.625rem;
 `;

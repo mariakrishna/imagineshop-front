@@ -39,6 +39,7 @@ const ProductId: NextPage<ProductsProps> = ({ product }) => {
   const { addProduct } = useContext(ShoppingCartContext);
   const addProductInShoppingCart = (product: IProduct) => {
     addProduct(product);
+    alert("produto adiconado ao carrinho");
   };
 
   return (
