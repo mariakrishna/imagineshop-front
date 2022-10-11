@@ -4,6 +4,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+
 import styled from "styled-components";
 
 import { ShoppingCartContext } from "../contexts/ShoppingCartContext";

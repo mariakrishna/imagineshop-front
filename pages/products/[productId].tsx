@@ -1,7 +1,10 @@
 import type { NextPage, GetServerSideProps } from "next";
 import styled from "styled-components";
 import { useContext } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import Image from "next/image";
+
+import "react-toastify/dist/ReactToastify.css";
 
 import { IProduct } from "../../types";
 import Banner from "../../components/Banner";
@@ -38,8 +41,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 const ProductId: NextPage<ProductsProps> = ({ product }) => {
   const { addProduct } = useContext(ShoppingCartContext);
   const addProductInShoppingCart = (product: IProduct) => {
+    toast("Produto adiconado no carrinho");
     addProduct(product);
-    alert("produto adiconado ao carrinho");
   };
 
   return (
@@ -67,6 +70,7 @@ const ProductId: NextPage<ProductsProps> = ({ product }) => {
         </SummaryTitle>
         <ProductSummary>{product.summary}</ProductSummary>
       </ProductContainer>
+      <ToastContainer />
     </>
   );
 };
